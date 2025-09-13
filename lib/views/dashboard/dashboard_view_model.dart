@@ -138,6 +138,7 @@ class DashboardNotifier extends Notifier<DashboardState> {
   }
 
   void gotoAddEntry(BuildContext context) {
+    // hive.clearAll();
     Navigator.of(context).pushNamed('/add').then((_) => loadOfflineEntries());
   }
 

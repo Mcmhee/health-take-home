@@ -124,4 +124,39 @@ PWA
 ## Notes
 
 - Ordering: entries are stored and displayed newest first via sorting in `HiveService.getAllEntries()`; avoid extra reversals.
-- Data model: `HealthEntryModel` includes `isSynced` to support offline-first be
+- Data model: `HealthEntryModel` includes `isSynced` to support offline-first behavior.
+
+## Tests
+
+This repo includes lightweight, fast unit tests focused on pure logic (no Hive or Supabase), so they run quickly and deterministically.
+
+What’s covered:
+
+- `test/helper_test.dart`
+  - `mergeEntries` deduplicates by `id`, prefers the latest record, and sorts results in reverse chronological order (newest first).
+  - `countWeeklyMoods` normalizes mood text (trim/lowercase) and counts only entries within the last 7 days.
+- `test/summary_view_model_test.dart`
+  - Sanity check for weekly mood counts using the same counting helper.
+
+Run all tests:
+
+```bash
+flutter test
+```
+
+Run a single file:
+
+```bash
+flutter test test/helper_test.dart
+```
+
+Run a single test by name (useful when iterating):
+
+```bash
+flutter test --plain-name "deduplicates by id and keeps newest first"
+```
+
+Notes:
+
+- These tests import `flutter_test` only; no device/emulator is required.
+- They validate core business logic independent of UI and storage layers.
