@@ -1,4 +1,3 @@
-// welcome_view.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:health_tracker/views/welcome/welcome_view_model.dart';
@@ -11,25 +10,12 @@ class WelcomeView extends ConsumerStatefulWidget {
 }
 
 class _WelcomeViewState extends ConsumerState<WelcomeView> {
-  late final WelcomeViewModel _vmNotifier;
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _vmNotifier = ref.read(welcomeViewModelProvider.notifier);
-      _vmNotifier.init(context);
-      _vmNotifier.nameController.addListener(_onNameChanged);
+      ref.read(welcomeViewModelProvider.notifier).init(context);
     });
-  }
-
-  @override
-  void dispose() {
-    _vmNotifier.nameController.removeListener(_onNameChanged);
-    super.dispose();
-  }
-
-  void _onNameChanged() {
-    setState(() {});
   }
 
   @override
@@ -40,7 +26,7 @@ class _WelcomeViewState extends ConsumerState<WelcomeView> {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(24.0),
+          padding: const EdgeInsets.all(24),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -57,7 +43,6 @@ class _WelcomeViewState extends ConsumerState<WelcomeView> {
                 ),
               ),
               const SizedBox(height: 32),
-
               TextField(
                 controller: vm.nameController,
                 decoration: InputDecoration(
@@ -66,10 +51,9 @@ class _WelcomeViewState extends ConsumerState<WelcomeView> {
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
+                onChanged: (_) => setState(() {}),
               ),
-
               const SizedBox(height: 24),
-
               ElevatedButton(
                 onPressed: isLoading ? null : () => vm.saveUser(context),
                 style: ElevatedButton.styleFrom(

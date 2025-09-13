@@ -55,7 +55,6 @@ class SupabaseService {
     final response = await _client
         .from('health_entries')
         .insert({
-          'id': entry.id,
           'user_id': entry.userId,
           'date': entry.date.toIso8601String(),
           'mood': entry.mood,

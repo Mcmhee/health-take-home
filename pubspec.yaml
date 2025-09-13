@@ -17,6 +17,8 @@ dependencies:
   hive: ^2.2.3
   hive_flutter: ^1.1.0
   device_info_plus: ^12.1.0
+  uuid: ^4.5.1
+  connectivity_plus:
 
 dev_dependencies:
   flutter_test:

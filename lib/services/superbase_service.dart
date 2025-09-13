@@ -17,12 +17,14 @@ class SupabaseService {
       anonKey: supabaseKey,
     );
     _client = supabase.client;
+
+    print("SupabaseService: _client initialized ✅ $_client");
   }
 
   Future<UserModel?> createUser(UserModel user) async {
     final response = await _client
         .from('users')
-        .insert({'name': user.name, 'device_id': user.deviceId})
+        .insert({'name': user.name, 'device_id': user.deviceId, 'id': user.id})
         .select()
         .maybeSingle();
 
@@ -60,6 +62,7 @@ class SupabaseService {
           'date': entry.date.toIso8601String(),
           'mood': entry.mood,
           'note': entry.note,
+          'synced': true,
         })
         .select()
         .maybeSingle();
@@ -74,6 +77,13 @@ class SupabaseService {
             note: response['note'],
             isSynced: true,
           );
+  }
+
+  syncEntries(List<HealthEntryModel> entries) async {
+    for (var entry in entries) {
+      if (entry.isSynced) continue;
+      await createEntry(entry);
+    }
   }
 
   Future<List<HealthEntryModel>> fetchEntries(String userId) async {
@@ -95,5 +105,9 @@ class SupabaseService {
           ),
         )
         .toList();
+  }
+
+  deleteEntry(String entryId) async {
+    await _client.from('health_entries').delete().eq('id', entryId);
   }
 }

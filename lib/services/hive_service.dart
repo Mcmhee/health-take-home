@@ -25,20 +25,28 @@ class HiveService {
     ]);
   }
 
+  //
   Box<UserModel> get _userBox => Hive.box<UserModel>(_usersBox);
+
   Future<void> saveUser(UserModel user) async {
     await _userBox.put('current_user', user);
   }
 
   UserModel? getUser() => _userBox.get('current_user');
+
   Future<void> deleteUser() async {
     await _userBox.delete('current_user');
   }
 
+  //
   Box<HealthEntryModel> get _entryBox =>
       Hive.box<HealthEntryModel>(_entriesBox);
+
   Future<void> addEntry(HealthEntryModel entry) async {
-    await _entryBox.add(entry);
+    if (entry.id == null) {
+      throw ArgumentError('HealthEntryModel.id cannot be null when saving');
+    }
+    await _entryBox.put(entry.id, entry);
   }
 
   List<HealthEntryModel> getAllEntries() {
@@ -47,12 +55,16 @@ class HiveService {
     return entries;
   }
 
-  Future<void> updateEntry(int key, HealthEntryModel entry) async {
-    await _entryBox.put(key, entry);
+  Future<void> saveAllEntries(List<HealthEntryModel> entries) async {
+    await _entryBox.clear();
+    for (var entry in entries) {
+      if (entry.id == null) continue;
+      await _entryBox.put(entry.id, entry);
+    }
   }
 
-  Future<void> deleteEntry(int key) async {
-    await _entryBox.delete(key);
+  Future<void> deleteEntry(String id) async {
+    await _entryBox.delete(id);
   }
 
   Future<void> clearAll() async {

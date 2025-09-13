@@ -5,7 +5,7 @@ part 'health_entry_model.g.dart';
 @HiveType(typeId: 1)
 class HealthEntryModel extends HiveObject {
   @HiveField(0)
-  String id; // Supabase id (uuid)
+  String? id; // Supabase id (uuid)
 
   @HiveField(1)
   String userId;
@@ -23,7 +23,7 @@ class HealthEntryModel extends HiveObject {
   bool isSynced; // for offline sync
 
   HealthEntryModel({
-    required this.id,
+    this.id,
     required this.userId,
     required this.date,
     required this.mood,
