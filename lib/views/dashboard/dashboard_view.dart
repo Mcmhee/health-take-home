@@ -16,16 +16,22 @@ class Dashboard extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Health Tracker"),
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(30),
-          child: const ConnectivityBanner(),
+        bottom: const PreferredSize(
+          preferredSize: Size.fromHeight(30),
+          child: ConnectivityBanner(),
         ),
-
         centerTitle: false,
         actions: [
-          IconButton(
-            icon: const Icon(Icons.bar_chart, size: 30),
-            onPressed: () {},
+          Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: TextButton.icon(
+              style: TextButton.styleFrom(foregroundColor: Colors.white),
+              icon: const Icon(Icons.bar_chart, size: 26),
+              label: const Text("Summary"),
+              onPressed: () {
+                notifier.gotoSummary(context);
+              },
+            ),
           ),
         ],
       ),

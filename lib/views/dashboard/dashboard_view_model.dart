@@ -6,6 +6,13 @@ import 'package:health_tracker/services/connectivity_service.dart';
 import 'package:health_tracker/services/hive_service.dart';
 import 'package:health_tracker/services/superbase_service.dart';
 import 'package:health_tracker/util/helper.dart';
+import 'package:health_tracker/views/summary/summary_view.dart';
+import 'package:health_tracker/views/summary/summary_view_model.dart';
+
+final dashboardNotifierProvider =
+    NotifierProvider<DashboardNotifier, DashboardState>(
+      () => DashboardNotifier(),
+    );
 
 class DashboardState {
   final bool isLoading;
@@ -26,11 +33,6 @@ class DashboardState {
     );
   }
 }
-
-final dashboardNotifierProvider =
-    NotifierProvider<DashboardNotifier, DashboardState>(
-      () => DashboardNotifier(),
-    );
 
 class DashboardNotifier extends Notifier<DashboardState> {
   final HiveService hive = HiveService.instance;
@@ -64,17 +66,16 @@ class DashboardNotifier extends Notifier<DashboardState> {
     var entries = hive.getAllEntries();
     entries = entries.reversed.toList();
     state = state.copyWith(entries: entries);
+    setLoading(false);
+
     if (state.currentUser != null &&
         await NetworkService.instance.hasConnection()) {
       final onlineEntries = await supabase.fetchEntries(state.currentUser!.id!);
       final mergedEntries = mergeEntries(entries, onlineEntries);
       await hive.saveAllEntries(mergedEntries);
       state = state.copyWith(entries: mergedEntries);
-
-      //
       supabase.syncEntries(mergedEntries);
     }
-    setLoading(false);
   }
 
   Future<void> loadOfflineEntries() async {
@@ -113,7 +114,6 @@ class DashboardNotifier extends Notifier<DashboardState> {
           await NetworkService.instance.hasConnection()) {
         supabase.deleteEntry(entry.id!.toString());
       }
-    } catch (e) {
     } finally {
       await loadOfflineEntries();
       setLoading(false);
@@ -137,7 +137,19 @@ class DashboardNotifier extends Notifier<DashboardState> {
     }
   }
 
-  gotoAddEntry(BuildContext context) {
+  void gotoAddEntry(BuildContext context) {
     Navigator.of(context).pushNamed('/add').then((_) => loadOfflineEntries());
+  }
+
+  void gotoSummary(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) {
+          ref.invalidate(summaryNotifierProvider);
+          return const SummaryView();
+        },
+      ),
+    );
   }
 }

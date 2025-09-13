@@ -65,7 +65,9 @@ class WelcomeViewModel extends Notifier<bool> {
       if (context.mounted) {
         Navigator.of(context).pushReplacementNamed('/dashboard');
       }
-    } catch (e) {
+    } catch (e, s) {
+      print(e);
+      print(s);
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
