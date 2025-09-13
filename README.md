@@ -2,7 +2,7 @@
 
 A lightweight health tracking app built with **Flutter**, **Riverpod**, **Hive**, and **Supabase**.
 
-It’s designed to be offline-first, snappy, and simple — you can jot down how you’re feeling each day, keep it on your device, and sync with the cloud whenever you’re online.
+It’s designed to be offline-first, snappy, and simple : you can jot down how you’re feeling each day, keep it on your device, and sync with the cloud whenever you’re online.
 
 ---
 
@@ -42,6 +42,13 @@ It’s designed to be offline-first, snappy, and simple — you can jot down how
 
 ## 🏗️ Architecture at a glance
 
+This app follows the MVVM (Model–View–ViewModel) pattern with a thin services layer:
+
+- Model → `lib/models/` (data classes, Hive adapters)
+- ViewModel → `lib/views/**/_view_model.dart` (Riverpod Notifiers that orchestrate state and side effects)
+- View → `lib/views/` and `lib/widget/` (Flutter UI widgets/screens)
+- Services → `lib/services/` (Hive/Supabase/Connectivity wrappers)
+
 - **Models**
   - `UserModel`
   - `HealthEntryModel` (with Hive adapters in `models/`)
@@ -51,6 +58,9 @@ It’s designed to be offline-first, snappy, and simple — you can jot down how
   - `SupabaseService` → CRUD wrappers + `syncEntries()` to reconcile local/remote
 - **Connectivity**
   - `NetworkService` → uses `connectivity_plus` + DNS ping to check online status
+- **ViewModels (Riverpod Notifiers)**
+  - One per screen/feature, e.g. `lib/views/dashboard/dashboard_view_model.dart`
+  - Expose immutable UI state and invoke services; views listen via Riverpod providers
 - **Screens**
   - `WelcomeView` → capture/restore user and move to Dashboard
   - `Dashboard` → list entries, add/delete, trigger sync on load
