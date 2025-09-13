@@ -84,30 +84,6 @@ flutter pub get
 flutter run
 ```
 
-## Screenshots
-
-Below are a few screenshots captured from the iOS simulator:
-
-<div>
-
-![Dashboard](/assets/Simulator%20Screenshot%20-%20iPhone%2016%20Plus%20-%202025-09-13%20at%2019.00.13.png)
-
-![Add Entry](/assets/Simulator%20Screenshot%20-%20iPhone%2016%20Plus%20-%202025-09-13%20at%2019.00.20.png)
-
-![Summary](/assets/Simulator%20Screenshot%20-%20iPhone%2016%20Plus%20-%202025-09-13%20at%2019.01.03.png)
-
-![Empty State](/assets/Simulator%20Screenshot%20-%20iPhone%2016%20Plus%20-%202025-09-13%20at%2019.01.49.png)
-
-</div>
-
-Note: These are static images and don’t require a Flutter assets declaration to render in this README on GitHub. If you want these images bundled in the app for runtime use, add the following to `pubspec.yaml` under `flutter`:
-
-```yaml
-flutter:
-  assets:
-    - assets/
-```
-
 ## Platform Supported
 
 Ios
@@ -123,7 +99,7 @@ PWA
 
 ## Time spent
 
-~6–7 hours across setup, modeling, UI, sync, and polish.
+~8–10 hours across setup, modeling, UI, sync, and polish.
 
 ## What I like
 
