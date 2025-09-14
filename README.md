@@ -120,6 +120,7 @@ PWA
 ## What I’d change with more time
 
 - Add integration/unit tests and e2e tests.
+- Navigation: adopt a proper, well-structured routing system (e.g., `go_router` on Navigator 2.0) with named/typed routes, nested navigation (tabs), deep linking, guarded routes (auth/connectivity), and state restoration/URL sync for web.
 - Conflict resolution for edits/deletes across devices.
 - Background sync with connectivity listener and debounce.
 - More robust error/exception mapping and logging.
